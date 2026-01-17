@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ShoppingCart, Menu, X, Search, User } from "lucide-react";
+import { ShoppingCart, Menu, X, User } from "lucide-react";
 import logo from "../assets/logo.png";
 
 export default function Navbar({ onNavClick, cartCount }) {
@@ -8,6 +8,10 @@ export default function Navbar({ onNavClick, cartCount }) {
   const handleNavClick = (page) => {
     onNavClick(page);
     setMobileMenuOpen(false);
+  };
+
+  const handleHairTest = () => {
+    handleNavClick("hair-test");
   };
 
   return (
@@ -36,7 +40,9 @@ export default function Navbar({ onNavClick, cartCount }) {
           >
             PRODUCTS
           </button>
-          <button className="transition hover:text-green-700">IMMUNITY</button>
+          <button className="transition hover:text-green-700">
+            CONTACT US
+          </button>
           <button
             onClick={() => handleNavClick("about")}
             className="transition hover:text-green-700"
@@ -46,12 +52,14 @@ export default function Navbar({ onNavClick, cartCount }) {
           <button className="transition hover:text-green-700">BLOGS</button>
         </div>
 
-        {/* Desktop Icons */}
+        {/* Desktop Icons and Button */}
         <div className="items-center hidden gap-4 md:flex">
-          <Search
-            size={20}
-            className="text-gray-700 transition cursor-pointer hover:text-green-700"
-          />
+          <button
+            onClick={handleHairTest}
+            className="px-5 py-2 text-sm font-semibold text-white transition bg-gray-800 rounded-lg hover:bg-gray-900"
+          >
+            TAKE THE HAIR TEST ™
+          </button>
           <button onClick={() => handleNavClick("login")}>
             <User
               size={20}
@@ -112,6 +120,12 @@ export default function Navbar({ onNavClick, cartCount }) {
             className="block w-full py-2 text-sm font-semibold text-left text-gray-700 uppercase hover:text-green-700"
           >
             Cart ({cartCount})
+          </button>
+          <button
+            onClick={handleHairTest}
+            className="w-full px-5 py-2 text-sm font-semibold text-white uppercase transition bg-gray-800 rounded-lg hover:bg-gray-900"
+          >
+            Take the Hair Test ™
           </button>
         </div>
       )}

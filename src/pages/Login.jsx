@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Eye, EyeOff, AlertCircle } from "lucide-react";
 
 export default function Login({ onNavigate }) {
@@ -33,51 +34,72 @@ export default function Login({ onNavigate }) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    // Clear error for this field
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
     if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: "",
-      });
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
-  const handleSubmit = (e) => {
+  // 🔥 REAL BACKEND LOGIN
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
+    setErrors({});
+
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      // ✅ Save token & user
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      // (optional) remember me
+      if (rememberMe) {
+        localStorage.setItem("rememberMe", "true");
+      }
+
+      // ✅ Redirect
       onNavigate("profile");
+    } catch (err) {
+      setErrors({
+        general: err.response?.data?.message || "Login failed",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center py-12 px-4">
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-br from-green-50 to-green-100">
       <div className="w-full max-w-md">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+        <div className="mb-8 text-center">
+          <h1 className="mb-2 text-4xl font-bold text-gray-800">
             Welcome Back
           </h1>
-          <p className="text-gray-600">Login to your Havintha account</p>
+          <p className="text-gray-600">Login to your Nirvati Account</p>
         </div>
 
         {/* Login Card */}
-        <div className="bg-white rounded-lg shadow-lg p-8 border border-green-100">
+        <div className="p-8 bg-white border border-green-100 rounded-lg shadow-lg">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* General Error */}
+            {errors.general && (
+              <p className="flex items-center gap-1 text-sm text-red-600">
+                <AlertCircle size={14} /> {errors.general}
+              </p>
+            )}
+
             {/* Email */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">
                 Email Address
               </label>
               <input
@@ -93,7 +115,7 @@ export default function Login({ onNavigate }) {
                 }`}
               />
               {errors.email && (
-                <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+                <p className="flex items-center gap-1 mt-1 text-sm text-red-600">
                   <AlertCircle size={14} /> {errors.email}
                 </p>
               )}
@@ -101,7 +123,7 @@ export default function Login({ onNavigate }) {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">
                 Password
               </label>
               <div className="relative">
@@ -119,43 +141,37 @@ export default function Login({ onNavigate }) {
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => setShowPassword((p) => !p)}
                   className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
               {errors.password && (
-                <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+                <p className="flex items-center gap-1 mt-1 text-sm text-red-600">
                   <AlertCircle size={14} /> {errors.password}
                 </p>
               )}
             </div>
 
-            {/* Remember Me & Forgot Password */}
+            {/* Remember Me */}
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded border-green-300 text-green-700 focus:ring-green-500"
+                  className="w-4 h-4 text-green-700 border-green-300 rounded focus:ring-green-500"
                 />
                 <span className="text-sm text-gray-600">Remember me</span>
               </label>
-              <button
-                type="button"
-                className="text-sm text-green-700 hover:text-green-800 font-medium"
-              >
-                Forgot Password?
-              </button>
             </div>
 
             {/* Login Button */}
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-green-700 hover:bg-green-800 disabled:bg-gray-400 text-white py-2 rounded-lg font-semibold transition mt-6"
+              className="w-full py-2 mt-6 font-semibold text-white transition bg-green-700 rounded-lg hover:bg-green-800 disabled:bg-gray-400"
             >
               {isSubmitting ? "Logging in..." : "Login"}
             </button>
@@ -167,37 +183,19 @@ export default function Login({ onNavigate }) {
               <div className="w-full border-t border-gray-200"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or</span>
+              <span className="px-2 text-gray-500 bg-white">Or</span>
             </div>
           </div>
 
-          {/* Social Login (UI only) */}
-          <button className="w-full border border-gray-300 hover:border-gray-400 text-gray-700 py-2 rounded-lg font-medium transition flex items-center justify-center gap-2">
-            <span>📧</span> Login with Google
-          </button>
-
           {/* Register Link */}
-          <p className="text-center text-gray-600 mt-6">
+          <p className="mt-6 text-center text-gray-600">
             Don't have an account?{" "}
             <button
               onClick={() => onNavigate("register")}
-              className="text-green-700 hover:text-green-800 font-semibold"
+              className="font-semibold text-green-700 hover:text-green-800"
             >
               Register here
             </button>
-          </p>
-        </div>
-
-        {/* Info Box */}
-        <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-center">
-          <p className="text-sm text-gray-600">
-            <span className="font-semibold text-gray-800">
-              Demo Credentials:
-            </span>
-            <br />
-            Email: demo@havintha.com
-            <br />
-            Password: demo123
           </p>
         </div>
       </div>

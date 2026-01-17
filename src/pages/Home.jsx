@@ -7,6 +7,11 @@ import {
   Shield,
   Sparkles,
   Heart,
+  Video,
+  Phone,
+  Clock,
+  CheckCircle,
+  X,
 } from "lucide-react";
 
 const dummyProducts = [
@@ -42,22 +47,6 @@ const dummyProducts = [
     image:
       "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=300&h=300&fit=crop",
   },
-  {
-    id: 5,
-    name: "Triphala Powder",
-    description: "Digestive wellness blend",
-    price: 549,
-    image:
-      "https://images.unsplash.com/photo-1599810775-8eef0e6b35cc?w=300&h=300&fit=crop",
-  },
-  {
-    id: 6,
-    name: "Tulsi Tea",
-    description: "Immunity & respiratory health",
-    price: 499,
-    image:
-      "https://images.unsplash.com/photo-1577318810033-e365fa266e39?w=300&h=300&fit=crop",
-  },
 ];
 
 const beforeAfterData = [
@@ -87,10 +76,12 @@ const beforeAfterData = [
 export default function Home({
   onNavClick = (section) => console.log(section),
 }) {
+  const [showConsultationModal, setShowConsultationModal] = useState(false);
+
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <div className="relative flex items-center min-h-screen overflow-hidden bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50">
+      <div className="relative flex items-center min-h-[calc(100vh-80px)] overflow-hidden bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50">
         <div className="absolute inset-0">
           <img
             src="https://ik.imagekit.io/h9xbdf0le/wp-content/uploads/2024/08/web-page-Blank.jpg"
@@ -108,14 +99,14 @@ export default function Home({
           ></div>
         </div>
 
-        <div className="relative z-10 w-full px-4 py-24 mx-auto text-center max-w-7xl md:py-32">
-          <div className="mb-8 animate-fade-in">
+        <div className="relative z-10 w-full px-4 py-16 mx-auto text-center max-w-7xl md:py-24">
+          <div className="mb-8">
             <p className="flex items-center justify-center gap-2 mb-4 text-sm font-bold tracking-widest text-green-700 uppercase animate-bounce">
               <Leaf size={16} /> Ancient Wisdom, Modern Wellness
             </p>
             <h1 className="mb-6 text-6xl font-black leading-tight text-gray-900 md:text-7xl lg:text-8xl drop-shadow-lg">
               Pure Herbal{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-emerald-500 to-teal-600 animate-pulse">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-emerald-500 to-teal-600">
                 Nature's Gift
               </span>
             </h1>
@@ -130,7 +121,7 @@ export default function Home({
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <button
               onClick={() => onNavClick("products")}
-              className="inline-flex items-center justify-center gap-2 px-12 py-4 text-lg font-bold text-white transition transform rounded-full shadow-2xl bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 hover:scale-110 hover:shadow-green-500/50"
+              className="inline-flex items-center justify-center gap-2 px-12 py-4 text-lg font-bold text-white transition transform rounded-full shadow-2xl bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 hover:scale-110"
             >
               Shop Collection <ChevronRight size={20} />
             </button>
@@ -142,16 +133,129 @@ export default function Home({
       </div>
 
       {/* Trust Banner */}
-      <div className="sticky z-40 py-4 text-white shadow-lg bg-gradient-to-r from-green-700 via-emerald-700 to-teal-700 top-16">
-        <div className="flex flex-wrap items-center justify-around gap-6 px-4 mx-auto text-sm font-semibold max-w-7xl md:text-base">
-          <div className="flex items-center gap-2 transition hover:scale-105">
-            <Truck size={18} /> Free Shipping Over ₹500
+      <div className="py-6 text-white shadow-md bg-gradient-to-r from-green-700 via-emerald-700 to-teal-700">
+        <div className="flex flex-col gap-4 px-4 mx-auto max-w-7xl md:flex-row md:justify-around md:gap-6">
+          <div className="flex items-center gap-3 text-sm font-semibold md:text-base">
+            <div className="p-2 bg-white rounded-full bg-opacity-20">
+              <Truck size={20} />
+            </div>
+            <span>Free Shipping Over ₹500</span>
           </div>
-          <div className="flex items-center gap-2 transition hover:scale-105">
-            <Award size={18} /> 100% Natural & Organic
+          <div className="flex items-center gap-3 text-sm font-semibold md:text-base">
+            <div className="p-2 bg-white rounded-full bg-opacity-20">
+              <Award size={20} />
+            </div>
+            <span>100% Natural & Organic</span>
           </div>
-          <div className="flex items-center gap-2 transition hover:scale-105">
-            <Shield size={18} /> 30-Day Money Back
+          <div className="flex items-center gap-3 text-sm font-semibold md:text-base">
+            <div className="p-2 bg-white rounded-full bg-opacity-20">
+              <Shield size={20} />
+            </div>
+            <span>30-Day Money Back</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Expert Consultation Section */}
+      <div className="px-4 py-20 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid items-center gap-12 md:grid-cols-2">
+            {/* Right Image */}
+            <div className="relative order-2 md:order-1">
+              <div className="relative overflow-hidden shadow-2xl bg-gradient-to-br from-green-100 to-emerald-100 rounded-3xl">
+                <img
+                  src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&h=500&fit=crop"
+                  alt="Expert Consultation"
+                  className="w-full h-auto"
+                />
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-900 to-transparent">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-semibold text-white">
+                      Expert Available Now
+                    </span>
+                  </div>
+                  <p className="mb-1 text-3xl font-bold text-white">₹299</p>
+                  <p className="text-xs text-gray-300">
+                    30-min consultation | Money-back guarantee
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Left Content */}
+            <div className="order-1 space-y-8 md:order-2">
+              <div>
+                <p className="flex items-center gap-2 mb-4 text-sm font-bold tracking-widest text-green-700 uppercase">
+                  <CheckCircle size={18} /> Expert Guidance
+                </p>
+                <h2 className="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
+                  Consult with Certified Experts
+                </h2>
+                <p className="text-lg leading-relaxed text-gray-700">
+                  Get personalized wellness guidance from certified Ayurvedic
+                  experts and health coaches. Understand your unique health
+                  profile and receive customized recommendations.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg">
+                      <Video size={24} className="text-green-700" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="mb-1 font-bold text-gray-900">
+                      Video Consultation
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      One-on-one video sessions with health experts
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg">
+                      <Phone size={24} className="text-green-700" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="mb-1 font-bold text-gray-900">
+                      Phone Consultation
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Quick calls with our wellness specialists
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg">
+                      <Clock size={24} className="text-green-700" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="mb-1 font-bold text-gray-900">
+                      24/7 Available
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Book consultations at your convenience
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setShowConsultationModal(true)}
+                className="inline-flex items-center gap-2 px-8 py-4 text-lg font-bold text-white transition transform rounded-xl bg-gradient-to-r from-green-700 to-emerald-700 hover:from-green-800 hover:to-emerald-800 hover:shadow-lg hover:scale-105"
+              >
+                Book Now <ChevronRight size={20} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -160,9 +264,7 @@ export default function Home({
       <div className="px-4 py-20 mx-auto max-w-7xl">
         <div className="grid gap-10 md:grid-cols-3">
           <div className="p-8 text-center transition transform border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl group hover:shadow-2xl hover:scale-105">
-            <div className="mb-6 text-6xl transition duration-300 transform group-hover:scale-125">
-              🌿
-            </div>
+            <div className="mb-6 text-6xl">🌿</div>
             <h3 className="mb-4 text-2xl font-bold text-gray-900">
               Certified Organic
             </h3>
@@ -173,9 +275,7 @@ export default function Home({
           </div>
 
           <div className="p-8 text-center transition transform border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl group hover:shadow-2xl hover:scale-105">
-            <div className="mb-6 text-6xl transition duration-300 transform group-hover:scale-125">
-              💚
-            </div>
+            <div className="mb-6 text-6xl">💚</div>
             <h3 className="mb-4 text-2xl font-bold text-gray-900">
               Ayurveda-Powered
             </h3>
@@ -186,9 +286,7 @@ export default function Home({
           </div>
 
           <div className="p-8 text-center transition transform border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl group hover:shadow-2xl hover:scale-105">
-            <div className="mb-6 text-6xl transition duration-300 transform group-hover:scale-125">
-              🌍
-            </div>
+            <div className="mb-6 text-6xl">🌍</div>
             <h3 className="mb-4 text-2xl font-bold text-gray-900">
               Global Excellence
             </h3>
@@ -205,170 +303,100 @@ export default function Home({
         <div className="mx-auto max-w-7xl">
           <div className="mb-16">
             <h2 className="mb-2 text-5xl font-bold text-gray-900">
-              Seen On Shark Tank
+              Our Best Sellers
             </h2>
             <p className="flex items-center gap-2 text-lg text-gray-600">
               <Sparkles size={20} className="text-yellow-500" />
-              Our most-loved herbal solutions
+              Trusted by thousands, loved by all
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-4">
-            {dummyProducts.slice(0, 4).map((product, idx) => {
-              const discount = idx % 2 === 0;
-              return (
-                <div
-                  key={product.id}
-                  onClick={() => onNavClick("products")}
-                  className="overflow-hidden transition transform bg-white border border-gray-200 cursor-pointer rounded-xl hover:shadow-2xl hover:scale-105 group"
-                >
-                  <div className="relative flex items-center justify-center h-56 overflow-hidden bg-white">
-                    {discount && (
-                      <>
-                        <div className="absolute z-10 px-3 py-1 text-xs font-bold text-white bg-red-600 rounded-lg top-3 left-3 animate-pulse">
-                          SALE
-                        </div>
-                        <div className="absolute z-10 px-3 py-1 text-xs font-bold font-black text-white bg-red-500 rounded-lg top-3 right-3">
-                          -15%
-                        </div>
-                      </>
-                    )}
-                    <div className="absolute z-10 top-3 right-3">
-                      <div className="px-3 py-2 text-xs font-bold text-white bg-blue-700 rounded-full">
-                        ❤️ BEST
-                      </div>
-                    </div>
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="object-cover w-48 h-48 transition rounded-lg group-hover:scale-110"
-                    />
+          <div className="grid gap-8 md:grid-cols-4">
+            {dummyProducts.map((product) => (
+              <div
+                key={product.id}
+                onClick={() => onNavClick("products")}
+                className="overflow-hidden transition-shadow duration-300 bg-white border border-gray-200 shadow-md cursor-pointer rounded-2xl hover:shadow-xl"
+              >
+                <div className="relative flex items-center justify-center h-56 overflow-hidden bg-white group">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="mb-2 text-lg font-bold text-gray-900">
+                    {product.name}
+                  </h3>
+                  <p className="mb-4 text-sm text-gray-600 line-clamp-2">
+                    {product.description}
+                  </p>
+
+                  <div className="flex items-center gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-sm text-yellow-400">
+                        ★
+                      </span>
+                    ))}
                   </div>
-                  <div className="p-5">
-                    <h3 className="mb-2 text-base font-bold text-gray-900 transition group-hover:text-green-700">
-                      {product.name}
-                    </h3>
-                    <p className="mb-3 text-sm text-gray-600 line-clamp-2">
-                      {product.description}
+
+                  <div className="flex items-center justify-between">
+                    <p className="text-2xl font-bold text-green-700">
+                      ₹{product.price}
                     </p>
-
-                    <div className="flex items-center gap-1 mb-4">
-                      {[...Array(5)].map((_, i) => (
-                        <span key={i} className="text-yellow-400">
-                          ★
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div>
-                        {discount && (
-                          <p className="text-sm text-gray-500 line-through">
-                            ₹{Math.round(product.price * 1.18)}
-                          </p>
-                        )}
-                        <p className="text-xl font-bold text-green-700">
-                          ₹{product.price}
-                        </p>
-                      </div>
-                      <button className="p-2 text-white transition bg-green-700 rounded-full hover:bg-green-800 hover:scale-110">
-                        <ChevronRight size={18} />
-                      </button>
-                    </div>
+                    <button className="p-3 text-white transition bg-green-700 rounded-full hover:bg-green-800 hover:scale-110">
+                      <ChevronRight size={20} />
+                    </button>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
       {/* Results Section */}
       <div className="px-4 py-20 mx-auto max-w-7xl">
-        <h2 className="mb-16 text-5xl font-bold text-center text-gray-900">
-          Real Results, Real People
-        </h2>
+        <div className="mb-16 text-center">
+          <p className="mb-4 text-sm font-semibold tracking-widest text-green-600 uppercase md:text-base">
+            Transformations
+          </p>
+          <h2 className="text-5xl font-bold text-gray-900 md:text-6xl">
+            Real Results, Real People
+          </h2>
+          <p className="max-w-2xl mx-auto mt-4 text-lg text-gray-600">
+            See how our herbal products have transformed lives across the globe
+          </p>
+        </div>
 
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid gap-10 md:grid-cols-3">
           {beforeAfterData.map((item, idx) => (
             <div
               key={idx}
-              className="overflow-hidden transition transform shadow-2xl rounded-2xl hover:shadow-3xl hover:scale-105"
+              className="overflow-hidden transition-shadow duration-300 shadow-lg rounded-3xl hover:shadow-xl"
             >
-              <div className="relative flex items-center justify-center bg-gray-200 h-96">
+              <div className="relative overflow-hidden bg-gray-200 h-96 group">
                 <img
                   src={item.beforeImg}
                   alt={item.title}
-                  className="object-cover w-full h-full"
+                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                 />
+                <div className="absolute inset-0 flex items-end transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/60 to-transparent group-hover:opacity-100">
+                  <div className="w-full p-6 text-white">
+                    <p className="text-sm font-semibold">Real Results</p>
+                    <p className="text-2xl font-bold">{item.title}</p>
+                  </div>
+                </div>
               </div>
-              <div className="p-6 text-white bg-gradient-to-r from-green-600 to-emerald-600">
-                <p className="text-xl font-bold text-center">{item.title}</p>
+              <div className="p-8 text-center text-white bg-gradient-to-r from-green-600 to-emerald-600">
+                <p className="text-lg font-bold">{item.title}</p>
+                <p className="mt-2 text-sm text-green-100">
+                  Transform naturally with Nirvati
+                </p>
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* All Products */}
-      <div className="px-4 py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-16">
-            <h2 className="mb-2 text-5xl font-bold text-gray-900">
-              All Products
-            </h2>
-            <p className="text-lg text-gray-600">
-              Explore our complete herbal collection
-            </p>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-5">
-            {dummyProducts.map((product, idx) => {
-              const discount = idx % 3 === 0;
-              return (
-                <div
-                  key={product.id}
-                  onClick={() => onNavClick("products")}
-                  className="overflow-hidden transition transform bg-white border border-gray-100 shadow-sm cursor-pointer rounded-xl hover:shadow-lg hover:scale-105 group"
-                >
-                  <div className="relative flex items-center justify-center h-40 overflow-hidden bg-white">
-                    {discount && (
-                      <div className="absolute z-10 top-2 left-2">
-                        <span className="px-2 py-1 text-xs font-bold text-white bg-red-600 rounded-lg">
-                          -15%
-                        </span>
-                      </div>
-                    )}
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="object-cover w-32 h-32 transition rounded-lg group-hover:scale-110"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="mb-1 text-sm font-bold text-gray-900 transition group-hover:text-green-700 line-clamp-2">
-                      {product.name}
-                    </h3>
-                    <p className="mb-2 text-xs text-gray-600 line-clamp-1">
-                      {product.description}
-                    </p>
-                    <p className="text-sm font-bold text-green-700">
-                      ₹{product.price}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="mt-12 text-center">
-            <button
-              onClick={() => onNavClick("products")}
-              className="px-10 py-4 text-lg font-bold text-green-700 transition border-2 border-green-700 rounded-full hover:bg-green-50 hover:shadow-lg"
-            >
-              View All Products
-            </button>
-          </div>
         </div>
       </div>
 
@@ -472,6 +500,79 @@ export default function Home({
           </button>
         </div>
       </div>
+
+      {/* Consultation Modal */}
+      {showConsultationModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+          <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-2xl rounded-3xl">
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="mb-2 text-3xl font-bold text-gray-900">
+                  Book Your Consultation
+                </h3>
+                <p className="text-gray-600">
+                  Choose your preferred consultation method
+                </p>
+              </div>
+              <button
+                onClick={() => setShowConsultationModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              <button className="flex items-center w-full gap-4 p-5 transition border-2 border-gray-200 rounded-xl hover:border-green-600 hover:bg-green-50 group">
+                <div className="flex items-center justify-center bg-green-100 rounded-lg w-14 h-14 group-hover:bg-green-200">
+                  <Video size={28} className="text-green-700" />
+                </div>
+                <div className="flex-1 text-left">
+                  <p className="font-bold text-gray-900">Video Consultation</p>
+                  <p className="text-sm text-gray-600">
+                    Face-to-face session via video
+                  </p>
+                </div>
+                <ChevronRight size={20} className="text-gray-400" />
+              </button>
+
+              <button className="flex items-center w-full gap-4 p-5 transition border-2 border-gray-200 rounded-xl hover:border-green-600 hover:bg-green-50 group">
+                <div className="flex items-center justify-center bg-green-100 rounded-lg w-14 h-14 group-hover:bg-green-200">
+                  <Phone size={28} className="text-green-700" />
+                </div>
+                <div className="flex-1 text-left">
+                  <p className="font-bold text-gray-900">Phone Consultation</p>
+                  <p className="text-sm text-gray-600">
+                    Quick call with expert
+                  </p>
+                </div>
+                <ChevronRight size={20} className="text-gray-400" />
+              </button>
+            </div>
+
+            <div className="p-5 border border-green-200 bg-green-50 rounded-xl">
+              <p className="mb-2 text-sm font-semibold text-green-900">
+                ✓ Only ₹299 per session
+              </p>
+              <p className="text-sm text-green-800">
+                30-minute consultation • 100% money-back guarantee • Expert
+                verified
+              </p>
+            </div>
+
+            <button className="w-full py-4 text-lg font-bold text-white transition bg-gradient-to-r from-green-700 to-emerald-700 rounded-xl hover:from-green-800 hover:to-emerald-800">
+              Proceed to Booking
+            </button>
+
+            <button
+              onClick={() => setShowConsultationModal(false)}
+              className="w-full py-4 font-bold text-gray-700 transition border-2 border-gray-200 rounded-xl hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

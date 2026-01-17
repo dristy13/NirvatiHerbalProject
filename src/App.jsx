@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import MyOrders from "./pages/MyOrders";
+import HairTestQuiz from "./pages/HairTestQuiz";
 
 export default function App() {
   // State Management
@@ -147,6 +148,9 @@ export default function App() {
 
       case "orders":
         return <MyOrders />;
+
+      case "hair-test":
+        return <HairTestQuiz onNavigate={handleNavClick} />;
 
       default:
         return <Home onNavClick={handleNavClick} />;
